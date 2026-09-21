@@ -19,7 +19,7 @@ class ApiService {
 
   // v2.17.1: URL explicita para evitar build Web gerando 'http://auth/login'.
   // Android e Web usam o mesmo backend da rede local.
-  static const String baseUrl = 'https://mentoria-adeh.onrender.com/api/v1';
+  static const String baseUrl = String.fromEnvironment('API_BASE_URL', defaultValue: 'https://mentoria-s9sr.onrender.com/api/v1');
   Future<String?> token() async => (await SharedPreferences.getInstance()).getString('access_token');
   Future<Map<String,String>> headers() async => {'Content-Type':'application/json', if(await token()!=null) 'Authorization':'Bearer ${await token()}'};
 
