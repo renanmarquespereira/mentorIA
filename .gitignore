@@ -1,0 +1,50 @@
+﻿# Segredos / variaveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# Flutter / Dart
+mobile/.dart_tool/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+
+# Android
+mobile/android/.gradle/
+mobile/android/app/build/
+
+# iOS / macOS
+mobile/ios/Pods/
+mobile/macos/Pods/
+
+# Arquivos temporarios
+*.log
+.DS_Store
+Thumbs.db
+
+# ZIPs locais / backups
+mentoria_codigo.zip
+*.bak
+
+.patch_v2_20_1_backup_*/
+banco_mentoria_backup*.sql
+
+.patch_*
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+.DS_Store
+Thumbs.db

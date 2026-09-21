@@ -1,0 +1,110 @@
+{
+  "version": "1.0",
+  "source": "Metodologia consolidada a partir das transcrições fornecidas da mentoria",
+  "principles": [
+    "A IA deve orientar segundo a sequência metodológica, evitando pular fundamentos.",
+    "Autoridade pode vir de resultados de clientes ou, no início, da própria transformação, formação e experiência legítima.",
+    "Nunca inventar resultados, clientes, depoimentos, certificações ou autoridade.",
+    "Posicionamento deve comunicar rapidamente o que o educador faz e a transformação que causa.",
+    "Branding e marketing são diferentes: branding sustenta percepção; marketing atrai.",
+    "Promessa deve nascer da persona, dores, desejos, objeções, Ponto A e Ponto B.",
+    "Valor percebido deve ser construído antes da apresentação de preço.",
+    "Funil deve ser escolhido de acordo com o estágio do educador, não por uma fórmula única.",
+    "Fechamento é consequência dos pilares anteriores e deve ser consultivo, ético e sem manipulação.",
+    "Métricas devem ser usadas para diagnosticar gargalos e orientar próximos passos."
+  ],
+  "pillars": {
+    "positioning": {
+      "name": "Posicionamento Único",
+      "goal": "Construir uma percepção clara, realista, coerente e diferenciada do educador.",
+      "core_concepts": [
+        "clareza em até 10 segundos",
+        "autoridade",
+        "valores",
+        "branding",
+        "identidade visual",
+        "postura e comunicação",
+        "vitrine"
+      ],
+      "rules": [
+        "Se não houver resultados de clientes, usar transformação pessoal, formação e experiência legítima.",
+        "Não confundir marketing com branding.",
+        "A identidade visual deve reforçar valores e percepção desejada."
+      ]
+    },
+    "promise": {
+      "name": "Promessa Atrativa",
+      "goal": "Empacotar a transformação de forma desejável, clara e coerente com a persona.",
+      "core_concepts": [
+        "produto principal",
+        "precificação",
+        "público-alvo",
+        "persona",
+        "dores",
+        "desejos",
+        "objeções",
+        "Ponto A",
+        "Ponto B",
+        "promessa",
+        "super promessa",
+        "copy",
+        "níveis de consciência",
+        "linha editorial",
+        "produção de conteúdo"
+      ],
+      "rules": [
+        "A promessa não deve ser definida antes da persona.",
+        "Valor percebido precisa ser maior que o preço.",
+        "Conteúdo de mentoria prioriza qualidade do lead e consciência, não somente alcance.",
+        "Copy deve combinar impacto, conexão e conversão."
+      ]
+    },
+    "funnel": {
+      "name": "Funil de Venda Poderoso",
+      "goal": "Criar um caminho previsível de aquisição, qualificação e avanço para a venda.",
+      "core_concepts": [
+        "prospecção",
+        "AIDA",
+        "níveis de consciência",
+        "narrativas",
+        "qualificação",
+        "demanda reprimida",
+        "aplicação direta",
+        "indicação",
+        "social selling",
+        "vídeo gravado",
+        "reunião secreta",
+        "LTV"
+      ],
+      "rules": [
+        "Não existe um único funil ideal.",
+        "Iniciantes podem começar por demanda reprimida e aplicação direta.",
+        "Indicação e LTV podem funcionar em paralelo.",
+        "A escolha do funil depende de estágio, perfil, validação, audiência e recursos."
+      ]
+    },
+    "closing": {
+      "name": "Fechamento Irrecusável",
+      "goal": "Conduzir vendas consultivas com clareza, diagnóstico, valor e ética.",
+      "core_concepts": [
+        "mentalidade para vendas",
+        "rapport",
+        "SPIN Selling",
+        "gatilhos mentais",
+        "objeções",
+        "follow-up",
+        "downgrade",
+        "depoimentos",
+        "indicações",
+        "métricas"
+      ],
+      "rules": [
+        "Ouvir mais do que falar.",
+        "SPIN: Situação, Problema, Implicação e Necessidade.",
+        "Não tratar objeção como não definitivo, mas respeitar um não claro.",
+        "Downgrade pode ser usado quando a mentoria principal ainda não é adequada.",
+        "Depoimentos e indicações devem ser obtidos de forma real e voluntária."
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+name = "mentoria"
+compatibility_date = "2026-09-14"
+
+[assets]
+directory = "./mobile/build/web"
+not_found_handling = "single-page-application"
