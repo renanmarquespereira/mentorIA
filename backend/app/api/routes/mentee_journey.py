@@ -38,6 +38,9 @@ class CheckInCreate(BaseModel):
     next_session_topic: str=Field(min_length=3,max_length=5000)
     confidence_level: int=Field(default=3,ge=1,le=5)
 
+class SessionCancel(BaseModel):
+    reason: str=Field(min_length=3,max_length=2000)
+
 def profile_payload(user, profile):
     return {'name':user.name,'email':user.email,'phone':user.phone or '', 'profile_photo':getattr(user,'profile_photo','') or '',
       'city_state':getattr(profile,'city_state',None),'education':getattr(profile,'education',None),'experience_months':getattr(profile,'experience_months',0) or 0,
@@ -77,11 +80,26 @@ def create_checkin(data:CheckInCreate,user:User=Depends(current_user),db:Session
 
 @router.get('/my-sessions')
 def my_sessions(user:User=Depends(current_user),db:Session=Depends(get_db)):
-    rows=db.scalars(select(MentorSession).where(MentorSession.mentee_user_id==user.id).order_by(MentorSession.scheduled_at.desc())).all()
+    rows=db.scalars(select(MentorSession).where(MentorSession.mentee_user_id==user.id,MentorSession.mentee_hidden==False).order_by(MentorSession.scheduled_at.desc())).all()
     now=datetime.utcnow()
     upcoming=sorted([r for r in rows if r.status=='scheduled' and r.scheduled_at>=now],key=lambda r:r.scheduled_at)
-    def item(r): return {'id':r.id,'scheduled_at':r.scheduled_at,'status':r.status,'summary':r.summary if r.status=='completed' else ''}
+    def item(r): return {
+        'id':r.id,'scheduled_at':r.scheduled_at,'status':r.status,'subject':r.subject or '',
+        'summary':r.summary if r.status=='completed' else '',
+        'decisions':r.decisions if r.status=='completed' else '',
+        'next_steps':r.next_steps if r.status=='completed' else '',
+        'cancellation_reason':r.cancellation_reason if r.status=='canceled' else '',
+    }
     return {'sessions':[item(r) for r in rows],'next_session':item(upcoming[0]) if upcoming else None}
+
+@router.post('/my-sessions/{session_id}/cancel')
+def cancel_my_session(session_id:str,data:SessionCancel,user:User=Depends(current_user),db:Session=Depends(get_db)):
+    row=db.scalar(select(MentorSession).where(MentorSession.id==session_id,MentorSession.mentee_user_id==user.id))
+    if not row: raise HTTPException(404,'Sessão não encontrada')
+    if row.status!='scheduled': raise HTTPException(409,'Somente mentorias agendadas podem ser canceladas')
+    row.status='canceled'; row.cancellation_reason=data.reason.strip()
+    db.add(MenteeNotification(user_id=user.id,kind='session',title='Mentoria cancelada',message='O cancelamento e o motivo foram registrados.'))
+    db.commit(); return {'ok':True,'status':'canceled','cancellation_reason':row.cancellation_reason}
 
 
 @router.get('/notifications')
@@ -106,10 +124,16 @@ def read_notification(notification_id:str,user:User=Depends(current_user),db:Ses
 
 @router.patch('/my-sessions/{session_id}/hide')
 def hide_my_session(session_id:str,user:User=Depends(current_user),db:Session=Depends(get_db)):
-    # Compatibilidade com a tela legada. A agenda nova nao oferece ocultacao.
     row=db.scalar(select(MentorSession).where(MentorSession.id==session_id,MentorSession.mentee_user_id==user.id))
     if not row: raise HTTPException(404,'Sessão não encontrada')
-    return {'ok':True}
+    if row.status!='completed': raise HTTPException(409,'Somente mentorias realizadas podem ser limpas da sua visualização')
+    row.mentee_hidden=True; db.commit(); return {'ok':True}
+
+@router.patch('/my-sessions/completed/hide')
+def hide_completed_sessions(user:User=Depends(current_user),db:Session=Depends(get_db)):
+    rows=db.scalars(select(MentorSession).where(MentorSession.mentee_user_id==user.id,MentorSession.status=='completed',MentorSession.mentee_hidden==False)).all()
+    for row in rows: row.mentee_hidden=True
+    db.commit(); return {'ok':True,'hidden':len(rows)}
 
 @router.delete('/notifications/{notification_id}')
 def delete_notification(notification_id:str,user:User=Depends(current_user),db:Session=Depends(get_db)):

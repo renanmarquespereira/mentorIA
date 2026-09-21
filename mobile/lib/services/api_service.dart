@@ -270,6 +270,12 @@ class ApiService {
   Future<void> hideMySession(String id) async {
     _ok(await http.patch(Uri.parse('$baseUrl/my-sessions/$id/hide'),headers:await headers()));
   }
+  Future<void> hideCompletedMySessions() async {
+    _ok(await http.patch(Uri.parse('$baseUrl/my-sessions/completed/hide'),headers:await headers()));
+  }
+  Future<void> cancelMySession(String id,String reason) async {
+    _ok(await http.post(Uri.parse('$baseUrl/my-sessions/$id/cancel'),headers:await headers(),body:jsonEncode({'reason':reason})));
+  }
   Future<List<dynamic>> mentorAgenda() async =>
       List<dynamic>.from(_ok(await http.get(Uri.parse('$baseUrl/mentor/sessions'),headers:await headers())));
 

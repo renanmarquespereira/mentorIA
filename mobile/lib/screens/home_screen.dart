@@ -21,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? data;
+  Map<String, dynamic>? nextMentoring;
   List<dynamic> resetRequests = [];
   bool loading = true;
   String? error;
@@ -30,11 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
       final results = await Future.wait([
         ApiService().dashboard(),
         ApiService().resetRequests(),
+        ApiService().myMentorSessions(),
       ]);
       if (!mounted) return;
       setState(() {
         data = Map<String, dynamic>.from(results[0] as Map);
         resetRequests = List<dynamic>.from(results[1] as List);
+        final sessions = Map<String,dynamic>.from(results[2] as Map);
+        nextMentoring = sessions['next_session'] == null ? null : Map<String,dynamic>.from(sessions['next_session']);
         loading = false;
         error = null;
       });
@@ -60,6 +64,13 @@ class _HomeScreenState extends State<HomeScreen> {
       case 'needs_review': return 'Aguardando revisão';
       default: return 'Não iniciado';
     }
+  }
+
+  String _mentoringDate(dynamic raw) {
+    final d = DateTime.tryParse(raw?.toString() ?? '')?.toLocal();
+    if (d == null) return 'Data a confirmar';
+    String z(int n) => n.toString().padLeft(2, '0');
+    return '${z(d.day)}/${z(d.month)}/${d.year} às ${z(d.hour)}:${z(d.minute)}';
   }
 
   String resetLabel(Map<String, dynamic> request) {
@@ -151,6 +162,18 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(padding: const EdgeInsets.all(16), children: [
           Text(data?['greeting'] ?? 'Olá', style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 6),
+          if (nextMentoring != null) ...[
+            Card(child: Padding(padding: const EdgeInsets.all(16), child: Row(children: [
+              const CircleAvatar(child: Icon(Icons.calendar_month_outlined)),
+              const SizedBox(width: 12),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text('Próxima mentoria', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4), Text(_mentoringDate(nextMentoring!['scheduled_at'])),
+              ])),
+              TextButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MenteeAgendaScreen())).then((_) => reload()), child: const Text('Ver detalhes')),
+            ]))),
+            const SizedBox(height: 8),
+          ],
           Card(child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text('Continue de onde parou', style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 6), Text(data?['next_action'] ?? ''),

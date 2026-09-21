@@ -15,6 +15,7 @@ class MentorSession(Base):
     status: Mapped[str] = mapped_column(String(20), default="scheduled", index=True)
     subject: Mapped[str] = mapped_column(String(300), default="")
     mentee_hidden: Mapped[bool] = mapped_column(default=False)
+    cancellation_reason: Mapped[str] = mapped_column(Text, default="")
     summary: Mapped[str] = mapped_column(Text, default="")
     decisions: Mapped[str] = mapped_column(Text, default="")
     next_steps: Mapped[str] = mapped_column(Text, default="")

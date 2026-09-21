@@ -29,6 +29,7 @@ def run_lightweight_migrations():
         "ALTER TABLE action_plan_items ADD COLUMN IF NOT EXISTS linked_session_id VARCHAR(36)",
         "ALTER TABLE mentor_sessions ADD COLUMN IF NOT EXISTS subject VARCHAR(300) DEFAULT ''",
         "ALTER TABLE mentor_sessions ADD COLUMN IF NOT EXISTS mentee_hidden BOOLEAN DEFAULT FALSE",
+        "ALTER TABLE mentor_sessions ADD COLUMN IF NOT EXISTS cancellation_reason TEXT DEFAULT ''",
         "CREATE INDEX IF NOT EXISTS ix_action_plan_items_linked_session_id ON action_plan_items (linked_session_id)",
         "ALTER TABLE mentee_checkins ADD COLUMN IF NOT EXISTS confidence_level INTEGER DEFAULT 3",
         "ALTER TABLE sales ADD COLUMN IF NOT EXISTS request_id VARCHAR(64)",

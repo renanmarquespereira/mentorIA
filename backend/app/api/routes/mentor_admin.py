@@ -881,6 +881,7 @@ def _session_dict(row, db: Session):
     return {
         "id": row.id, "scheduled_at": row.scheduled_at, "status": row.status,
         "summary": row.summary, "decisions": row.decisions, "next_steps": row.next_steps,
+        "cancellation_reason": getattr(row, "cancellation_reason", "") or "",
         "created_at": row.created_at, "updated_at": row.updated_at,
         "actions": [{"id": a.id, "title": a.title, "status": a.status, "progress_percent": a.progress_percent} for a in linked],
     }
